@@ -5,8 +5,10 @@ import android.view.Menu
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,29 +17,35 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hdeck.R
 import com.example.hdeck.databinding.ActivityMainBinding
-import com.example.hdeck.ui.deck_list.DeckListViewModel
+import com.example.hdeck.navigation.Navigator
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModelImpl
+    @Inject
+    lateinit var navigator: Navigator
+    private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[MainViewModelImpl::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.contentMain.toolbar)
 
-        val navView: NavigationView = binding.navMain.navViewLayout
+//        val navView: NavigationView = binding.navMain.navViewLayout
         val navController = findNavController(R.id.fragment)
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.deck_list), binding.drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navigator.navController = navController
+        viewModel.state.observe(this){
+
+        }
+//        appBarConfiguration = AppBarConfiguration(setOf(R.id.deck_list), binding.drawerLayout)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+//        navView.setupWithNavController(navController)
 
         val listPopupWindow =
             ListPopupWindow(this, null, com.google.android.material.R.attr.listPopupWindowStyle)
@@ -77,5 +85,10 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigator.navController = null
     }
 }
