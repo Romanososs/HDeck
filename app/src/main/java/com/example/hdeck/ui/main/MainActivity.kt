@@ -1,4 +1,4 @@
-package com.example.hdeck.ui
+package com.example.hdeck.ui.main
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,17 +8,12 @@ import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.hdeck.R
 import com.example.hdeck.databinding.ActivityMainBinding
 import com.example.hdeck.navigation.Navigator
-import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
     @Inject
     lateinit var navigator: Navigator
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
@@ -37,43 +33,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.contentMain.toolbar)
 
-//        val navView: NavigationView = binding.navMain.navViewLayout
         val navController = findNavController(R.id.fragment)
         navigator.navController = navController
-        viewModel.state.observe(this){
+        viewModel.state.heroClassList.observe(this) {
+            binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
+                it.getCurrent().toString()
+            val popup = DropDownMenu(
+                this, binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout,
+                it.list
+            ) {
 
-        }
-//        appBarConfiguration = AppBarConfiguration(setOf(R.id.deck_list), binding.drawerLayout)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//        navView.setupWithNavController(navController)
-
-        val listPopupWindow =
-            ListPopupWindow(this, null, com.google.android.material.R.attr.listPopupWindowStyle)
-        listPopupWindow.anchorView = binding.navMain.navContentMain.dropdownMenu1.dropdownLayout
-        val items = listOf(
-            "Item 1",
-            "Item 2",
-            "Item 3",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4",
-            "Item 4"
-        )
-        val adapter = ArrayAdapter(this, R.layout.list_popup_window_item, items)
-
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.height = 550
-
-        listPopupWindow.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-            listPopupWindow.dismiss()
-        }
-        binding.navMain.navContentMain.dropdownMenu1.dropdownButton.setOnClickListener {
-            listPopupWindow.show()
+            }
+            binding.navMain.navContentMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
+                popup.show()
+            }
+            binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout.visibility =
+                if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 

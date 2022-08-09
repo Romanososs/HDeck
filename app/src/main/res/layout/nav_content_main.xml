@@ -5,14 +5,17 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/dropdown_menu_1"
-        layout="@layout/dropdown_menu" />
+        android:id="@+id/dropdown_menu_sets"
+        layout="@layout/dropdown_menu"
+        android:visibility="gone" />
 
     <include
-        android:id="@+id/dropdown_menu_2"
-        layout="@layout/dropdown_menu" />
+        android:id="@+id/dropdown_menu_classes"
+        layout="@layout/dropdown_menu"
+        android:visibility="gone" />
 
     <include
-        android:id="@+id/dropdown_menu_3"
-        layout="@layout/dropdown_menu" />
+        android:id="@+id/dropdown_menu_rarity"
+        layout="@layout/dropdown_menu"
+        android:visibility="gone" />
 </LinearLayout>

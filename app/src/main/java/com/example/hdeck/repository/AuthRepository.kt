@@ -13,7 +13,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val dataSource: RetrofitDataSource
 ): AuthRepository, BaseRepository {
     override suspend fun getToken(): String {
-        return "USy64irXs74zi4yefQCt8pf4eC4xT60m58"
+        return "US5QxzxG9V3BxfYWgSbMYX6veo7LDoy65C"
     }
 
 }

@@ -10,7 +10,6 @@
         android:id="@+id/dropdown_field"
         android:layout_height="match_parent"
         android:layout_width="0dp"
-        android:text="text"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/dropdown_button"

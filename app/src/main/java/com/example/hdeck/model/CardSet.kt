@@ -9,4 +9,8 @@ data class CardSet(
     val collectibleRevealedCount: Int,
     val nonCollectibleCount: Int,
     val nonCollectibleRevealedCount: Int
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}

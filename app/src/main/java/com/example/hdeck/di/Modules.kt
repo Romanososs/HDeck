@@ -1,6 +1,5 @@
 package com.example.hdeck.di
 
-import android.util.Log
 import com.example.hdeck.data_source.RetrofitDataSource
 import com.example.hdeck.data_source.RetrofitDataSourceImpl
 import com.example.hdeck.data_source.StoreDataSource
@@ -11,8 +10,8 @@ import com.example.hdeck.repository.AuthRepository
 import com.example.hdeck.repository.AuthRepositoryImpl
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.repository.MetadataRepositoryImpl
-import com.example.hdeck.ui.MainViewModel
-import com.example.hdeck.ui.MainViewModelImpl
+import com.example.hdeck.ui.main.MainViewModel
+import com.example.hdeck.ui.main.MainViewModelImpl
 import com.example.hdeck.ui.deck_list.DeckListViewModel
 import com.example.hdeck.ui.deck_list.DeckListViewModelImpl
 import dagger.Binds
