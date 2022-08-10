@@ -27,28 +27,73 @@ class MainActivity : AppCompatActivity() {
     lateinit var navigator: Navigator
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
+    lateinit var menuHeroClasses: DropDownMenu
+    lateinit var menuCardSets: DropDownMenu
+    lateinit var menuCardRarities: DropDownMenu
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.contentMain.toolbar)
-
-        val navController = findNavController(R.id.fragment)
-        navigator.navController = navController
+        navigator.navController = findNavController(R.id.fragment)
+        createMenus()
         viewModel.state.heroClassList.observe(this) {
             binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
                 it.getCurrent().toString()
-            val popup = DropDownMenu(
-                this, binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout,
-                it.list
-            ) {
-
-            }
-            binding.navMain.navContentMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
-                popup.show()
-            }
+            menuHeroClasses.setData(it.list)
             binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout.visibility =
                 if (it.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+        viewModel.state.cardSetList.observe(this) {
+            binding.navMain.navContentMain.dropdownMenuSets.dropdownField.text =
+                it.getCurrent().toString()
+            menuCardSets.setData(it.list)
+            binding.navMain.navContentMain.dropdownMenuSets.dropdownLayout.visibility =
+                if (it.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+        viewModel.state.cardRarityList.observe(this) {
+            binding.navMain.navContentMain.dropdownMenuRarity.dropdownField.text =
+                it.getCurrent().toString()
+            menuCardRarities.setData(it.list)
+            binding.navMain.navContentMain.dropdownMenuRarity.dropdownLayout.visibility =
+                if (it.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun createMenus() {
+        menuHeroClasses = DropDownMenu(
+            this, binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout
+        ) {
+            viewModel.onClassHeroListItemClick(it)
+        }
+        binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.setOnClickListener {
+            viewModel.onClassHeroClick()
+        }
+        binding.navMain.navContentMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
+            menuHeroClasses.show()
+        }
+        menuCardSets = DropDownMenu(
+            this, binding.navMain.navContentMain.dropdownMenuSets.dropdownLayout
+        ) {
+            viewModel.onCardSetListItemClick(it)
+        }
+        binding.navMain.navContentMain.dropdownMenuSets.dropdownField.setOnClickListener {
+            viewModel.onCardSetClick()
+        }
+        binding.navMain.navContentMain.dropdownMenuSets.dropdownButton.setOnClickListener {
+            menuCardSets.show()
+        }
+        menuCardRarities = DropDownMenu(
+            this, binding.navMain.navContentMain.dropdownMenuRarity.dropdownLayout
+        ) {
+            viewModel.onCardRarityListItemClick(it)
+        }
+        binding.navMain.navContentMain.dropdownMenuRarity.dropdownField.setOnClickListener {
+            viewModel.onCardRarityClick()
+        }
+        binding.navMain.navContentMain.dropdownMenuRarity.dropdownButton.setOnClickListener {
+            menuCardRarities.show()
         }
     }
 

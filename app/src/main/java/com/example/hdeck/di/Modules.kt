@@ -1,25 +1,27 @@
 package com.example.hdeck.di
 
+import android.content.Context
 import com.example.hdeck.data_source.RetrofitDataSource
 import com.example.hdeck.data_source.RetrofitDataSourceImpl
 import com.example.hdeck.data_source.StoreDataSource
 import com.example.hdeck.data_source.StoreDataSourceImpl
 import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.navigation.NavigatorImpl
-import com.example.hdeck.repository.AuthRepository
-import com.example.hdeck.repository.AuthRepositoryImpl
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.repository.MetadataRepositoryImpl
-import com.example.hdeck.ui.main.MainViewModel
-import com.example.hdeck.ui.main.MainViewModelImpl
+import com.example.hdeck.auth.AuthService
+import com.example.hdeck.auth.AuthServiceImpl
 import com.example.hdeck.ui.deck_list.DeckListViewModel
 import com.example.hdeck.ui.deck_list.DeckListViewModelImpl
+import com.example.hdeck.ui.main.MainViewModel
+import com.example.hdeck.ui.main.MainViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
@@ -31,7 +33,7 @@ class AppProvideModule {
     @Provides
     fun provideMetadataRepository(
         dataSource: RetrofitDataSource,
-        authRepo: AuthRepository
+        authRepo: AuthService
     ): MetadataRepository = MetadataRepositoryImpl(dataSource, authRepo)
 
     @Singleton
@@ -39,7 +41,7 @@ class AppProvideModule {
     fun provideAuthRepository(
         store: StoreDataSource,
         dataSource: RetrofitDataSource
-    ): AuthRepository = AuthRepositoryImpl(store, dataSource)
+    ): AuthService = AuthServiceImpl(store, dataSource)
 
     @Singleton
     @Provides
@@ -49,7 +51,8 @@ class AppProvideModule {
     @Singleton
     @Provides
     fun provideStoreDataSource(
-    ): StoreDataSource = StoreDataSourceImpl()
+        @ApplicationContext context: Context
+    ): StoreDataSource = StoreDataSourceImpl(context)
 
 }
 

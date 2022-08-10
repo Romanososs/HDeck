@@ -10,18 +10,21 @@ import com.example.hdeck.R
 import com.example.hdeck.model.NameableEntity
 
 class DropDownMenu(
-    context: Context,
+    private val context: Context,
     container: View,
-    data: List<Any>,
-    onItemSelect: () -> Unit
+    data: List<Any> = emptyList(),
+    onItemSelect: (Int) -> Unit
 ): ListPopupWindow(context, null, com.google.android.material.R.attr.listPopupWindowStyle) {
     init {
         anchorView = container
         height = 550
-        setAdapter(ArrayAdapter(context, R.layout.list_popup_window_item, data))
-        setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-            onItemSelect()
+        setData(data)
+        setOnItemClickListener { _, _, position: Int, _ ->
+            onItemSelect(position)
             dismiss()
         }
+    }
+    fun setData(data: List<Any>){
+        setAdapter(ArrayAdapter(context, R.layout.list_popup_window_item, data))
     }
 }

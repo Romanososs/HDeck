@@ -1,5 +1,6 @@
 package com.example.hdeck.net
 
+import com.example.hdeck.auth.TokenResponse
 import com.example.hdeck.model.CardRarity
 import com.example.hdeck.model.CardSet
 import com.example.hdeck.model.HeroClass
@@ -13,7 +14,7 @@ interface RetrofitApi {
         @Field("client_secret") client_secret: String,
         @Field("grant_type") grant_type: String =  "client_credentials"
     ): TokenResponse
-//TODO maybe smash it into one fun
+//TODO maybe smash it into one function
     @GET("hearthstone/metadata/classes")
     suspend fun getHeroClassList(
         @Query("locale") locale: String,

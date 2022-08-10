@@ -1,4 +1,4 @@
-package com.example.hdeck.net
+package com.example.hdeck.auth
 
 data class TokenResponse(
     val access_token: String,

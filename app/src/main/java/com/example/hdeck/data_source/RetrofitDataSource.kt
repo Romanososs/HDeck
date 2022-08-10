@@ -4,7 +4,7 @@ import com.example.hdeck.model.CardRarity
 import com.example.hdeck.model.CardSet
 import com.example.hdeck.model.HeroClass
 import com.example.hdeck.net.RetrofitApi
-import com.example.hdeck.net.TokenResponse
+import com.example.hdeck.auth.TokenResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit

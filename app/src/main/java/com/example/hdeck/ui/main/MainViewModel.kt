@@ -12,6 +12,12 @@ import javax.inject.Inject
 
 interface MainViewModel  {
     val state: MetadataState
+    fun onClassHeroClick()
+    fun onClassHeroListItemClick(index: Int)
+    fun onCardSetClick()
+    fun onCardSetListItemClick(index: Int)
+    fun onCardRarityClick()
+    fun onCardRarityListItemClick(index: Int)
 }
 
 @HiltViewModel
@@ -29,15 +35,46 @@ class MainViewModelImpl @Inject constructor(
             _state.heroClassList.value = IndexedList(list)
 
         })
-//        jobs.add(viewModelScope.launch{
-//            repo.getHeroClassList().toMutableList().removeIf {
-//                it.cardId == 0
-//            }
-//        })
-//        jobs.add(viewModelScope.launch{
-//            repo.getHeroClassList().toMutableList().removeIf {
-//                it.cardId == 0
-//            }
-//        })
+        jobs.add(viewModelScope.launch{
+            _state.cardSetList.value = IndexedList(repo.getCardSetList())
+
+        })
+        jobs.add(viewModelScope.launch{
+            _state.cardRarityList.value = IndexedList(repo.getCardRarityList())
+        })
     }
+
+    override fun onClassHeroClick() {
+        //navigation
+    }
+
+    override fun onClassHeroListItemClick(index: Int) {
+        _state.heroClassList.value = _state.heroClassList.value?.copy(
+            index = index
+        )
+        //navigation
+    }
+
+    override fun onCardSetClick() {
+        //navigation
+    }
+
+    override fun onCardSetListItemClick(index: Int) {
+        _state.cardSetList.value = _state.cardSetList.value?.copy(
+            index = index
+        )
+        //navigation
+    }
+
+    override fun onCardRarityClick() {
+        //navigation
+    }
+
+    override fun onCardRarityListItemClick(index: Int) {
+        _state.cardRarityList.value = _state.cardRarityList.value?.copy(
+            index = index
+        )
+        //navigation
+    }
+
 }
