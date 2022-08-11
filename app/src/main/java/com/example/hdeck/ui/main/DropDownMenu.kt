@@ -1,13 +1,10 @@
 package com.example.hdeck.ui.main
 
 import android.content.Context
-import android.util.AttributeSet
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.ListPopupWindow
 import com.example.hdeck.R
-import com.example.hdeck.model.NameableEntity
 
 class DropDownMenu(
     private val context: Context,

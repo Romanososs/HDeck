@@ -13,28 +13,33 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface StoreDataSource {
-    val accessToken: Flow<AuthData?>
-    suspend fun saveToken(accessToken: String)
+    val authData: Flow<AuthData?>
+    suspend fun saveToken(accessToken: String, expiresIn: Long)
     suspend fun clear()
 }
 
 class StoreDataSourceImpl @Inject constructor(
     private val context: Context
-): StoreDataSource {
+) : StoreDataSource {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-    override val accessToken: Flow<AuthData?>
+    override val authData: Flow<AuthData?>
         get() = context.dataStore.data.map { preferences ->
-            AuthData(
-                preferences[ACCESS_TOKEN],
-                preferences[EXPIRES]
-            )
+            val accessToken = preferences[ACCESS_TOKEN]
+            val expiresIn = preferences[EXPIRES]
+            if (accessToken != null && expiresIn != null)
+                AuthData(
+                    accessToken,
+                    expiresIn
+                )
+            else null
         }
 
 
-    override suspend fun saveToken(accessToken: String) {
+    override suspend fun saveToken(accessToken: String, expiresIn: Long) {
         context.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
+            preferences[EXPIRES] = expiresIn
         }
     }
 

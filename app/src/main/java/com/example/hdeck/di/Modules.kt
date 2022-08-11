@@ -1,16 +1,13 @@
 package com.example.hdeck.di
 
 import android.content.Context
-import com.example.hdeck.data_source.RetrofitDataSource
-import com.example.hdeck.data_source.RetrofitDataSourceImpl
-import com.example.hdeck.data_source.StoreDataSource
-import com.example.hdeck.data_source.StoreDataSourceImpl
 import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.navigation.NavigatorImpl
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.repository.MetadataRepositoryImpl
 import com.example.hdeck.auth.AuthService
 import com.example.hdeck.auth.AuthServiceImpl
+import com.example.hdeck.data_source.*
 import com.example.hdeck.ui.deck_list.DeckListViewModel
 import com.example.hdeck.ui.deck_list.DeckListViewModelImpl
 import com.example.hdeck.ui.main.MainViewModel
@@ -38,15 +35,20 @@ class AppProvideModule {
 
     @Singleton
     @Provides
-    fun provideAuthRepository(
+    fun provideAuthService(
         store: StoreDataSource,
-        dataSource: RetrofitDataSource
+        dataSource: AuthDataSource
     ): AuthService = AuthServiceImpl(store, dataSource)
 
     @Singleton
     @Provides
     fun provideRetrofitDataSource(
     ): RetrofitDataSource = RetrofitDataSourceImpl(Dispatchers.IO)
+
+    @Singleton
+    @Provides
+    fun provideAuthDataSource(
+    ): AuthDataSource = AuthDataSourceImpl(Dispatchers.IO)
 
     @Singleton
     @Provides

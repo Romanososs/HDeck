@@ -3,8 +3,6 @@ package com.example.hdeck.data_source
 import com.example.hdeck.model.CardRarity
 import com.example.hdeck.model.CardSet
 import com.example.hdeck.model.HeroClass
-import com.example.hdeck.net.RetrofitApi
-import com.example.hdeck.auth.TokenResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -12,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 interface RetrofitDataSource {
-    suspend fun getToken(): TokenResponse
+
     suspend fun getHeroClassList(locale: String, accessToken: String): List<HeroClass>
     suspend fun getCardSetList(locale: String, accessToken: String): List<CardSet>
     suspend fun getCardRarityList(locale: String, accessToken: String): List<CardRarity>
@@ -28,10 +26,6 @@ class RetrofitDataSourceImpl @Inject constructor(
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(RetrofitApi::class.java)
-
-    override suspend fun getToken(): TokenResponse {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun getHeroClassList(locale: String, accessToken: String): List<HeroClass> {
         return withContext(dispatcher) { retrofit.getHeroClassList(locale, accessToken) }
