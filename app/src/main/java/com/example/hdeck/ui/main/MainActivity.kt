@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.hdeck.R
+import com.example.hdeck.auth.AuthService
 import com.example.hdeck.databinding.ActivityMainBinding
 import com.example.hdeck.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator
+    @Inject
+    lateinit var authService: AuthService
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
     lateinit var menuHeroClasses: DropDownMenu
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.contentMain.toolbar)
+        authService.start()
         navigator.navController = findNavController(R.id.fragment)
         createMenus()
         viewModel.state.heroClassList.observe(this) {
