@@ -8,8 +8,10 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.hdeck.auth.AuthData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface StoreDataSource {
@@ -37,9 +39,11 @@ class StoreDataSourceImpl @Inject constructor(
 
 
     override suspend fun saveToken(accessToken: String, expiresIn: Long) {
-        context.dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN] = accessToken
-            preferences[EXPIRES] = expiresIn
+        withContext(Dispatchers.IO) {
+            context.dataStore.edit { preferences ->
+                preferences[ACCESS_TOKEN] = accessToken
+                preferences[EXPIRES] = expiresIn
+            }
         }
     }
 
