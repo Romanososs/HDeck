@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Veronika/Desktop/Work/HDeck/app/src/main/res/layout/activity_main.xml" value="0.2151268115942029" />
+        <entry key="..\:/Users/Veronika/Desktop/Work/HDeck/app/src/main/res/layout/content_main.xml" value="0.2151268115942029" />
+        <entry key="..\:/Users/Veronika/Desktop/Work/HDeck/app/src/main/res/layout/fragment_deck_list.xml" value="0.2151268115942029" />
+        <entry key="..\:/Users/Veronika/Desktop/Work/HDeck/app/src/main/res/layout/fragment_placeholder.xml" value="0.1" />
+        <entry key="..\:/Users/Veronika/Desktop/Work/HDeck/app/src/main/res/menu/main.xml" value="0.22447916666666667" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.1645" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1911231884057971" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1911231884057971" />

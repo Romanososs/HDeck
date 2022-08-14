@@ -1,6 +1,8 @@
 package com.example.hdeck.ui.main
 
 import androidx.lifecycle.viewModelScope
+import com.example.hdeck.R
+import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.state.IndexedList
 import com.example.hdeck.state.MetadataState
@@ -22,7 +24,8 @@ interface MainViewModel  {
 
 @HiltViewModel
 class MainViewModelImpl @Inject constructor(
-    private val repo: MetadataRepository
+    private val repo: MetadataRepository,
+    private val navigator: Navigator
 ): MainViewModel, BaseViewModel() {
     private val _state = MetadataStateImpl()
     override val state: MetadataState
@@ -45,7 +48,7 @@ class MainViewModelImpl @Inject constructor(
     }
 
     override fun onClassHeroClick() {
-        //navigation
+        navigator.navController?.navigate(R.id.hero_class_list)
     }
 
     override fun onClassHeroListItemClick(index: Int) {
@@ -56,7 +59,8 @@ class MainViewModelImpl @Inject constructor(
     }
 
     override fun onCardSetClick() {
-        //navigation
+
+        navigator.navController?.navigate(R.id.card_set_list)
     }
 
     override fun onCardSetListItemClick(index: Int) {
@@ -67,7 +71,8 @@ class MainViewModelImpl @Inject constructor(
     }
 
     override fun onCardRarityClick() {
-        //navigation
+
+        navigator.navController?.navigate(R.id.card_rarity_list)
     }
 
     override fun onCardRarityListItemClick(index: Int) {

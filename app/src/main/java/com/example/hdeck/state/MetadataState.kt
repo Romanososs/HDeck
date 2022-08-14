@@ -16,6 +16,7 @@ class MetadataStateImpl : MetadataState {
     override val cardSetList: MutableLiveData<IndexedList<CardSet>> = MutableLiveData()
     override val cardRarityList: MutableLiveData<IndexedList<CardRarity>> = MutableLiveData()
     override val heroClassList: MutableLiveData<IndexedList<HeroClass>> = MutableLiveData()
+
 }
 
 data class IndexedList<T>(

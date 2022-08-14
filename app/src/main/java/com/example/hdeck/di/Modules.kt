@@ -56,16 +56,20 @@ class AppProvideModule {
         @ApplicationContext context: Context
     ): StoreDataSource = StoreDataSourceImpl(context)
 
+    @Singleton
+    @Provides
+    fun provideNavigator(
+    ): Navigator = NavigatorImpl()
 }
 
-@Module
-@InstallIn(ActivityComponent::class)
-abstract class ActivityProvideModule {
-    @Binds
-    abstract fun bindNavigatorImpl(
-        impl: NavigatorImpl
-    ): Navigator
-}
+//@Module
+//@InstallIn(ActivityComponent::class)
+//abstract class ActivityProvideModule {
+//    @Binds
+//    abstract fun bindNavigatorImpl(
+//        impl: NavigatorImpl
+//    ): Navigator
+//}
 
 @Module
 @InstallIn(ViewModelComponent::class)

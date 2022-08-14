@@ -3,20 +3,20 @@ package com.example.hdeck.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.ListPopupWindow
+import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.hdeck.R
-import com.example.hdeck.auth.AuthService
 import com.example.hdeck.databinding.ActivityMainBinding
 import com.example.hdeck.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator
-    @Inject
-    lateinit var authService: AuthService
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
     lateinit var menuHeroClasses: DropDownMenu
@@ -39,8 +37,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.contentMain.toolbar)
-        authService.start()
-        navigator.navController = findNavController(R.id.fragment)
+
+        val navController = findNavController(R.id.fragment)
+        val navGraph: NavGraph = navController.navInflater.inflate(R.navigation.mobile_navigation)
+        navGraph.setStartDestination(R.id.card_set_list)
+        navController.setGraph(navGraph, null)
+        navigator.navController = navController
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.card_set_list, R.id.hero_class_list, R.id.card_rarity_list
+            ), binding.drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
         createMenus()
         viewModel.state.heroClassList.observe(this) {
             binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
