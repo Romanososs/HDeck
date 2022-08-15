@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.example.hdeck.auth.AuthService
 import com.example.hdeck.model.Card
 import com.example.hdeck.model.Cards
-import com.example.hdeck.model.Category
+import com.example.hdeck.model.enums.Category
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -35,6 +35,7 @@ class CardsPagingSource @AssistedInject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Card> {
         val pageNumber = params.key ?: 1
         val response = getCards(pageNumber, params.loadSize)
+        println("TAGTAG getcards ${response.page}")
         return LoadResult.Page(
             data = response.cards,
             prevKey = if (pageNumber > 1) pageNumber - 1 else null,

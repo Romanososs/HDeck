@@ -3,9 +3,11 @@ package com.example.hdeck.model
 data class Card(
     val id: Int,
     val slug: String,
-    val image: String
+    val image: String,
+    val name: String,
+    val flavorText: String
 )
-
+//{
 //"id": 62347,
 //"collectible": 1,
 //"slug": "62347-aegwynn-the-guardian",

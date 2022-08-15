@@ -1,12 +1,7 @@
 package com.example.hdeck.navigation
 
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import com.example.hdeck.R
-import com.example.hdeck.model.Category
+import com.example.hdeck.model.enums.Category
 import com.example.hdeck.ui.deck_list.DeckListFragmentDirections
 import javax.inject.Inject
 

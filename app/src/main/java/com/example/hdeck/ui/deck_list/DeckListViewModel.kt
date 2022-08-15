@@ -5,15 +5,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.liveData
-import com.example.hdeck.data_source.CardsPagingSource
-import com.example.hdeck.model.Category
+import com.example.hdeck.model.enums.Category
 import com.example.hdeck.repository.CardRepositoryImpl
-import com.example.hdeck.state.BaseState
 import com.example.hdeck.state.DeckListState
 import com.example.hdeck.state.DeckListStateImpl
-import com.example.hdeck.state.MetadataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface DeckListViewModel {

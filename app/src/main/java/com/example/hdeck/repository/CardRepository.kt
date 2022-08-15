@@ -1,10 +1,9 @@
 package com.example.hdeck.repository
 
 import androidx.paging.*
-import com.example.hdeck.auth.AuthService
 import com.example.hdeck.data_source.CardsPagingSource
 import com.example.hdeck.model.Card
-import com.example.hdeck.model.Category
+import com.example.hdeck.model.enums.Category
 import javax.inject.Inject
 
 class CardRepositoryImpl @Inject constructor(

@@ -1,4 +1,4 @@
-package com.example.hdeck.model
+package com.example.hdeck.model.enums
 
 enum class Category {
     HeroClass,
