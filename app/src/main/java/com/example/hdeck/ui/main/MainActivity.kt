@@ -39,13 +39,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.contentMain.toolbar)
 
         val navController = findNavController(R.id.fragment)
-        val navGraph: NavGraph = navController.navInflater.inflate(R.navigation.mobile_navigation)
-        navGraph.setStartDestination(R.id.card_set_list)
-        navController.setGraph(navGraph, null)
+//        val navGraph: NavGraph = navController.navInflater.inflate(R.navigation.mobile_navigation)
+//        navGraph.setStartDestination(R.id.deck_list)
+//        navController.setGraph(navGraph, null)
         navigator.navController = navController
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.card_set_list, R.id.hero_class_list, R.id.card_rarity_list
+                R.id.placeholder, R.id.deck_list
             ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -78,9 +78,11 @@ class MainActivity : AppCompatActivity() {
             this, binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout
         ) {
             viewModel.onClassHeroListItemClick(it)
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.setOnClickListener {
             viewModel.onClassHeroClick()
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
             menuHeroClasses.show()
@@ -89,9 +91,11 @@ class MainActivity : AppCompatActivity() {
             this, binding.navMain.navContentMain.dropdownMenuSets.dropdownLayout
         ) {
             viewModel.onCardSetListItemClick(it)
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuSets.dropdownField.setOnClickListener {
             viewModel.onCardSetClick()
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuSets.dropdownButton.setOnClickListener {
             menuCardSets.show()
@@ -100,9 +104,11 @@ class MainActivity : AppCompatActivity() {
             this, binding.navMain.navContentMain.dropdownMenuRarity.dropdownLayout
         ) {
             viewModel.onCardRarityListItemClick(it)
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuRarity.dropdownField.setOnClickListener {
             viewModel.onCardRarityClick()
+            binding.drawerLayout.closeDrawers()
         }
         binding.navMain.navContentMain.dropdownMenuRarity.dropdownButton.setOnClickListener {
             menuCardRarities.show()

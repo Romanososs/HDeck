@@ -5,12 +5,12 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/dropdown_menu_sets"
+        android:id="@+id/dropdown_menu_classes"
         layout="@layout/dropdown_menu"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/dropdown_menu_classes"
+        android:id="@+id/dropdown_menu_sets"
         layout="@layout/dropdown_menu"
         android:visibility="gone" />
 

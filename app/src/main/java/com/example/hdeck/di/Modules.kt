@@ -8,6 +8,7 @@ import com.example.hdeck.repository.MetadataRepositoryImpl
 import com.example.hdeck.auth.AuthService
 import com.example.hdeck.auth.AuthServiceImpl
 import com.example.hdeck.data_source.*
+import com.example.hdeck.repository.CardRepositoryImpl
 import com.example.hdeck.ui.deck_list.DeckListViewModel
 import com.example.hdeck.ui.deck_list.DeckListViewModelImpl
 import com.example.hdeck.ui.main.MainViewModel
@@ -32,6 +33,12 @@ class AppProvideModule {
         dataSource: RetrofitDataSource,
         authRepo: AuthService
     ): MetadataRepository = MetadataRepositoryImpl(dataSource, authRepo)
+
+    @Singleton
+    @Provides
+    fun provideCardRepository(
+        factory: CardsPagingSource.Factory
+    ): CardRepositoryImpl = CardRepositoryImpl(factory)
 
     @Singleton
     @Provides

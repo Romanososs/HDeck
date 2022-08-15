@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 interface RetrofitDataSource {
-
     suspend fun getHeroClassList(locale: String, accessToken: String): List<HeroClass>
     suspend fun getCardSetList(locale: String, accessToken: String): List<CardSet>
     suspend fun getCardRarityList(locale: String, accessToken: String): List<CardRarity>

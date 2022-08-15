@@ -15,10 +15,10 @@ interface BaseRepository {
             } catch (throwable: Throwable) {
                 when (throwable) {
                     is HttpException -> {
-                        BaseState.Failure(false, throwable.code(), throwable.message)
+                        BaseState.Failure(throwable.code(), throwable.message)
                     }
                     else -> {
-                        BaseState.Failure(true, null, null)
+                        BaseState.Failure(null, null)
                     }
                 }
             }
