@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import com.example.hdeck.databinding.FragmentDeckListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -32,15 +35,23 @@ class DeckListFragment : Fragment() {
 
         val pagingAdapter = DeckListAdapter(UserComparator)
         binding.cards.adapter = pagingAdapter
-        //TODO check
         viewModel.state.cardList.observe(viewLifecycleOwner) { pagingData ->
             viewLifecycleOwner.lifecycleScope.launch {
                 pagingAdapter.submitData(pagingData)
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            pagingAdapter.loadStateFlow.collectLatest {
+                setLoading(it.refresh is LoadState.Loading)
+            }
+        }
         return root
     }
 
+    private fun setLoading(isLoading: Boolean){
+        binding.progressBar.isVisible = isLoading
+        binding.cards.isVisible = !isLoading
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

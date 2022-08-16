@@ -26,7 +26,11 @@ class DeckListViewModelImpl @Inject constructor(
 
     private val _state = DeckListStateImpl(
         Pager(
-            PagingConfig(pageSize = 20)
+            PagingConfig(
+                pageSize = 20,
+                initialLoadSize = 40,
+                maxSize = 200
+            )
         ) {
             cardRepo.getCardsSource(Category.values()[categoryId], slug)
         }.liveData.cachedIn(viewModelScope)

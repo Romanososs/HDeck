@@ -35,5 +35,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="@string/try_out" />
+        app:text="@string/try_out" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.hdeck.R
-import com.example.hdeck.databinding.CardItemBinding
 import com.example.hdeck.model.Card
 
 class DeckListAdapter(diffCallback: DiffUtil.ItemCallback<Card>) :
@@ -19,7 +18,7 @@ class DeckListAdapter(diffCallback: DiffUtil.ItemCallback<Card>) :
         parent: ViewGroup,
         viewType: Int
     ): DeckListViewHolder {
-        return DeckListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_item, parent, false))
+        return DeckListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false))
     }
 
     override fun onBindViewHolder(holder: DeckListViewHolder, position: Int) {
@@ -34,20 +33,15 @@ class DeckListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView = itemView.findViewById(R.id.image)
 
     fun bind(card: Card?) {
-
-        with(itemView) {
             imageView.load(card?.image) {
-                //placeholder(ColorDrawable(Color.TRANSPARENT))
             }
             nameView.text = card?.name
             flavorTextView.text = card?.flavorText
-        }
     }
 }
 
 object UserComparator : DiffUtil.ItemCallback<Card>() {
     override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean {
-        // Id is unique.
         return oldItem.id == newItem.id
     }
 
