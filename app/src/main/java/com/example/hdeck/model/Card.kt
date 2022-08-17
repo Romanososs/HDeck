@@ -5,6 +5,7 @@ data class Card(
     val slug: String,
     val image: String,
     val name: String,
+    val text: String,
     val flavorText: String
 )
 //{

@@ -11,7 +11,7 @@ class DropDownMenu(
     container: View,
     data: List<Any> = emptyList(),
     onItemSelect: (Int) -> Unit
-): ListPopupWindow(context, null, com.google.android.material.R.attr.listPopupWindowStyle) {
+): ListPopupWindow(context, null, com.google.android.material.R.attr.listPopupWindowStyle, R.style.DropDownMenu) {
     init {
         anchorView = container
         height = 550

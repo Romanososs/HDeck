@@ -16,7 +16,9 @@ import javax.inject.Inject
 
 interface StoreDataSource {
     val authData: Flow<AuthData?>
+    val locale: Flow<String>
     suspend fun saveToken(accessToken: String, expiresIn: Long)
+    suspend fun saveLocale(locale: String)
     suspend fun clear()
 }
 
@@ -36,6 +38,10 @@ class StoreDataSourceImpl @Inject constructor(
                 )
             else null
         }
+    override val locale: Flow<String>
+        get() = context.dataStore.data.map { preferences ->
+            preferences[LOCALE] ?: "en"
+        }
 
 
     override suspend fun saveToken(accessToken: String, expiresIn: Long) {
@@ -43,6 +49,13 @@ class StoreDataSourceImpl @Inject constructor(
             context.dataStore.edit { preferences ->
                 preferences[ACCESS_TOKEN] = accessToken
                 preferences[EXPIRES] = expiresIn
+            }
+        }
+    }
+    override suspend fun saveLocale(locale: String) {
+        withContext(Dispatchers.IO) {
+            context.dataStore.edit { preferences ->
+                preferences[LOCALE] = locale
             }
         }
     }
@@ -56,5 +69,6 @@ class StoreDataSourceImpl @Inject constructor(
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val EXPIRES = longPreferencesKey("key_expires")
+        private val LOCALE = stringPreferencesKey("key_locale")
     }
 }
