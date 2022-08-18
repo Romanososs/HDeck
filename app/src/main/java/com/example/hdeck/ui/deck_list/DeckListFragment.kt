@@ -47,7 +47,14 @@ class DeckListFragment : Fragment() {
         }
         return root
     }
-
+    override fun onStart() {
+        super.onStart()
+        viewModel.onViewShown()
+    }
+    override fun onStop() {
+        super.onStop()
+        viewModel.onViewHidden()
+    }
     private fun setLoading(isLoading: Boolean){
         binding.progressBar.isVisible = isLoading
         binding.cards.isVisible = !isLoading

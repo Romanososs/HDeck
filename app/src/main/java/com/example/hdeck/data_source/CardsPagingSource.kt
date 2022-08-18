@@ -3,6 +3,7 @@ package com.example.hdeck.data_source
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.hdeck.auth.AuthService
+import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.model.Card
 import com.example.hdeck.model.Cards
 import com.example.hdeck.model.enums.Category
@@ -14,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CardsPagingSource @AssistedInject constructor(
     private val authService: AuthService,
+    private val localeService: LocaleService,
     @Assisted("category") val category: Category,
     @Assisted("slug") val slug: String
 ) : PagingSource<Int, Card>() {
@@ -35,7 +37,6 @@ class CardsPagingSource @AssistedInject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Card> {
         val pageNumber = params.key ?: 1
         val response = getCards(pageNumber, params.loadSize)
-        println("TAGTAG getcards ${response.page}")
         return LoadResult.Page(
             data = response.cards,
             prevKey = if (pageNumber > 1) pageNumber - 1 else null,
@@ -45,21 +46,22 @@ class CardsPagingSource @AssistedInject constructor(
 
     private suspend fun getCards(page: Int, pageSize: Int): Cards {
         val accessToken = authService.getToken()
+        val locale = localeService.getLocale()
         return when (category) {
             Category.CardSet -> retrofit.getCardList(
-                "en_US",
+                locale,
                 page,
                 pageSize,
                 accessToken, set = slug
             )
             Category.HeroClass -> retrofit.getCardList(
-                "en_US",
+                locale,
                 page,
                 pageSize,
                 accessToken, heroClass = slug
             )
             Category.CardRarity -> retrofit.getCardList(
-                "en_US",
+                locale,
                 page,
                 pageSize,
                 accessToken, rarity = slug

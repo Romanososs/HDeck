@@ -8,6 +8,9 @@ import com.example.hdeck.repository.MetadataRepositoryImpl
 import com.example.hdeck.auth.AuthService
 import com.example.hdeck.auth.AuthServiceImpl
 import com.example.hdeck.data_source.*
+import com.example.hdeck.localization.LocaleService
+import com.example.hdeck.localization.LocaleServiceImpl
+import com.example.hdeck.localization.StringProvider
 import com.example.hdeck.repository.CardRepositoryImpl
 import com.example.hdeck.ui.deck_list.DeckListViewModel
 import com.example.hdeck.ui.deck_list.DeckListViewModelImpl
@@ -31,8 +34,9 @@ class AppProvideModule {
     @Provides
     fun provideMetadataRepository(
         dataSource: RetrofitDataSource,
-        authRepo: AuthService
-    ): MetadataRepository = MetadataRepositoryImpl(dataSource, authRepo)
+        localeService: LocaleService,
+        authService: AuthService
+    ): MetadataRepository = MetadataRepositoryImpl(dataSource, localeService, authService)
 
     @Singleton
     @Provides
@@ -40,12 +44,24 @@ class AppProvideModule {
         factory: CardsPagingSource.Factory
     ): CardRepositoryImpl = CardRepositoryImpl(factory)
 
+//    @Singleton
+//    @Provides
+//    fun provideStringProvider(
+//    ): StringProvider = StringProvider()
+
     @Singleton
     @Provides
     fun provideAuthService(
         store: StoreDataSource,
         dataSource: AuthDataSource
     ): AuthService = AuthServiceImpl(store, dataSource)
+
+    @Singleton
+    @Provides
+    fun provideLocaleService(
+        @ApplicationContext context: Context,
+        store: StoreDataSource,
+    ): LocaleService = LocaleServiceImpl(context, store)
 
     @Singleton
     @Provides

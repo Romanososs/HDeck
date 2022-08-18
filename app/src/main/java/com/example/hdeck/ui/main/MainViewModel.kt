@@ -1,18 +1,24 @@
 package com.example.hdeck.ui.main
 
 import androidx.lifecycle.viewModelScope
+import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.state.IndexedList
 import com.example.hdeck.state.MetadataState
 import com.example.hdeck.state.MetadataStateImpl
 import com.example.hdeck.ui.BaseViewModel
+import com.example.hdeck.ui.BaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-interface MainViewModel {
+interface MainViewModel : BaseViewModel {
     val state: MetadataState
+    fun onLocaleClick(locale: String)
     fun onClassHeroClick()
     fun onClassHeroListItemClick(index: Int)
     fun onCardSetClick()
@@ -24,26 +30,32 @@ interface MainViewModel {
 @HiltViewModel
 class MainViewModelImpl @Inject constructor(
     private val repo: MetadataRepository,
+    private val localeService: LocaleService,
     private val navigator: Navigator
-) : MainViewModel, BaseViewModel() {
+) : MainViewModel, BaseViewModelImpl() {
     private val _state = MetadataStateImpl()
     override val state: MetadataState
         get() = _state
 
     init {
-        jobs.add(viewModelScope.launch {
-            val list = repo.getHeroClassList().toMutableList()
-            list.removeIf { it.cardId == 0 }
-            _state.heroClassList.value = IndexedList(list)
+        viewModelScope.launch {
+            //FIXME viewModel collects even when view is hidden
+            //https://developer.android.com/kotlin/flow#collect
+            localeService.language.collectLatest {
+                val list = repo.getHeroClassList().toMutableList()
+                list.removeIf { it.cardId == 0 }
+                _state.heroClassList.value = IndexedList(list)
+                _state.cardSetList.value = IndexedList(repo.getCardSetList())
+                _state.cardRarityList.value = IndexedList(repo.getCardRarityList())
 
-        })
-        jobs.add(viewModelScope.launch {
-            _state.cardSetList.value = IndexedList(repo.getCardSetList())
+            }
+        }
+    }
 
-        })
-        jobs.add(viewModelScope.launch {
-            _state.cardRarityList.value = IndexedList(repo.getCardRarityList())
-        })
+    override fun onLocaleClick(locale: String) {
+        viewModelScope.launch {
+            localeService.setLocale(locale)
+        }
     }
 
     override fun onClassHeroClick() {
@@ -86,7 +98,8 @@ class MainViewModelImpl @Inject constructor(
         )
         navigateToCardRarityList()
     }
-    private fun navigateToCardRarityList(){
+
+    private fun navigateToCardRarityList() {
         navigator.navigateToCardRarityList(state.cardRarityList.value?.getCurrent()?.slug)
     }
 

@@ -2,19 +2,24 @@ package com.example.hdeck.ui.main
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavGraph
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.hdeck.R
 import com.example.hdeck.databinding.ActivityMainBinding
+import com.example.hdeck.localization.LocaleService
+import com.example.hdeck.localization.StringProvider
 import com.example.hdeck.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -26,6 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var localeService: LocaleService
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
     lateinit var menuHeroClasses: DropDownMenu
@@ -39,9 +47,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.contentMain.toolbar)
 
         val navController = findNavController(R.id.fragment)
-//        val navGraph: NavGraph = navController.navInflater.inflate(R.navigation.mobile_navigation)
-//        navGraph.setStartDestination(R.id.deck_list)
-//        navController.setGraph(navGraph, null)
         navigator.navController = navController
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -50,6 +55,10 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         createMenus()
+        //TODO rework(!)
+        lifecycleScope.launch {
+            localeService.setLocale()
+        }
         viewModel.state.heroClassList.observe(this) {
             binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
                 it.getCurrent().toString()
@@ -120,9 +129,28 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val locale = when (item.itemId) {
+            R.id.ru -> "ru"
+            else -> "en"
+        }
+        viewModel.onLocaleClick(locale)
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onViewShown()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onViewHidden()
     }
 
     override fun onDestroy() {
