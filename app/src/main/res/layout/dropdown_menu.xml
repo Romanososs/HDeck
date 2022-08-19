@@ -10,29 +10,37 @@
 
     <TextView
         android:id="@+id/dropdown_field"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:padding="12dp"
-        tools:text="Test Text"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/line"
         app:layout_constraintEnd_toStartOf="@+id/dropdown_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Long Test Text Long Test Text Long Test Text Long Test Text" />
 
     <ImageButton
 
         android:id="@+id/dropdown_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         style="@style/IconButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/ic_down_drop_arrow"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dropdown_field"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="@color/white" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="?attr/colorSecondary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

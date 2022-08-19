@@ -1,12 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/ru"
-        android:title="ru"
+        android:id="@+id/de"
+        android:title="@string/de"
         app:showAsAction="never" />
     <item
         android:id="@+id/en"
-        android:title="en"
+        android:title="@string/en"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/es_ES"
+        android:title="@string/es_ES"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/es_MX"
+        android:title="@string/es_MX"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/fr"
+        android:title="@string/fr"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/it"
+        android:title="@string/it"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ja"
+        android:title="@string/ja"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ko"
+        android:title="@string/ko"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/pl"
+        android:title="@string/pl"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/pt"
+        android:title="@string/pt"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ru"
+        android:title="@string/ru"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/th"
+        android:title="@string/th"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/zh"
+        android:title="@string/zh"
         app:showAsAction="never" />
 </menu>

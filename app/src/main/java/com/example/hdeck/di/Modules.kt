@@ -44,11 +44,6 @@ class AppProvideModule {
         factory: CardsPagingSource.Factory
     ): CardRepositoryImpl = CardRepositoryImpl(factory)
 
-//    @Singleton
-//    @Provides
-//    fun provideStringProvider(
-//    ): StringProvider = StringProvider()
-
     @Singleton
     @Provides
     fun provideAuthService(
@@ -59,9 +54,8 @@ class AppProvideModule {
     @Singleton
     @Provides
     fun provideLocaleService(
-        @ApplicationContext context: Context,
         store: StoreDataSource,
-    ): LocaleService = LocaleServiceImpl(context, store)
+    ): LocaleService = LocaleServiceImpl(store)
 
     @Singleton
     @Provides
@@ -106,10 +100,5 @@ abstract class ViewModelProvideModule {
     abstract fun bindMainViewModelImpl(
         impl: MainViewModelImpl
     ): MainViewModel
-
-//    @Binds
-//    abstract fun bindNewsViewModelImpl(
-//        impl: NewsViewModelImpl
-//    ): NewsViewModel
 
 }

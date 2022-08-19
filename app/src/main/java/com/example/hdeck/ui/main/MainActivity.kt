@@ -1,5 +1,7 @@
 package com.example.hdeck.ui.main
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,9 +19,21 @@ import com.example.hdeck.R
 import com.example.hdeck.databinding.ActivityMainBinding
 import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.localization.StringProvider
+import com.example.hdeck.model.Language
+import com.example.hdeck.model.SupportedLanguages
+import com.example.hdeck.model.enums.Category
+import com.example.hdeck.model.enums.SetType
 import com.example.hdeck.navigation.Navigator
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
+import java.util.*
 import javax.inject.Inject
 
 
@@ -32,8 +46,14 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    @Inject
-    lateinit var localeService: LocaleService
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface HiltLocaleServiceEntryPoint {
+        val service: LocaleService
+    }
+//    @Inject
+//    lateinit var localeService: LocaleService
+
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
     lateinit var menuHeroClasses: DropDownMenu
@@ -55,9 +75,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         createMenus()
-        //TODO rework(!)
-        lifecycleScope.launch {
-            localeService.setLocale()
+        viewModel.state.activeCategory.observe(this) {
+            setCategory(it)
         }
         viewModel.state.heroClassList.observe(this) {
             binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
@@ -81,6 +100,20 @@ class MainActivity : AppCompatActivity() {
                 if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
+
+    override fun attachBaseContext(newBase: Context) {
+        val config = Configuration()
+        val service = EntryPointAccessors.fromApplication(
+            newBase,
+            HiltLocaleServiceEntryPoint::class.java
+        ).service
+        //FIXME usage of runBlocking
+        val currentLocale = runBlocking { service.getLocale() }
+        config.setLocale(Locale(currentLocale))
+//        applyOverrideConfiguration(config)
+        super.attachBaseContext(newBase.createConfigurationContext(config))
+    }
+
 
     private fun createMenus() {
         menuHeroClasses = DropDownMenu(
@@ -124,6 +157,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setCategory(category: Category) {
+        binding.navMain.navContentMain.dropdownMenuClasses.line.visibility =
+            if (category == Category.HeroClass) View.VISIBLE else View.GONE
+        binding.navMain.navContentMain.dropdownMenuSets.line.visibility =
+            if (category == Category.CardSet) View.VISIBLE else View.GONE
+        binding.navMain.navContentMain.dropdownMenuRarity.line.visibility =
+            if (category == Category.CardRarity) View.VISIBLE else View.GONE
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
@@ -131,10 +173,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val locale = when (item.itemId) {
-            R.id.ru -> "ru"
-            else -> "en"
+            R.id.de -> SupportedLanguages.GERMAN
+            R.id.en -> SupportedLanguages.ENGLISH
+            R.id.es_ES -> SupportedLanguages.SPANISH
+            R.id.es_MX -> SupportedLanguages.MEXICAN
+            R.id.fr -> SupportedLanguages.FRENCH
+            R.id.it -> SupportedLanguages.ITALIAN
+            R.id.ja -> SupportedLanguages.JAPANESE
+            R.id.ko -> SupportedLanguages.KOREAN
+            R.id.pl -> SupportedLanguages.POLISH
+            R.id.pt -> SupportedLanguages.PORTUGUESE
+            R.id.ru -> SupportedLanguages.RUSSIAN
+            R.id.th -> SupportedLanguages.THAI
+            R.id.zh -> SupportedLanguages.CHINESE
+            else -> null
         }
-        viewModel.onLocaleClick(locale)
+        locale?.let { viewModel.onLocaleClick(it.code) { recreate() } }
         return super.onOptionsItemSelected(item)
     }
 

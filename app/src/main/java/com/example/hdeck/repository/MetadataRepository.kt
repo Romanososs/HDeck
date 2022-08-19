@@ -22,14 +22,14 @@ class MetadataRepositoryImpl @Inject constructor(
 ) : MetadataRepository, BaseRepository {
 
     override suspend fun getCardSetList(): List<CardSet> {
-        return dataSource.getCardSetList(localeService.getLocale(), authService.getToken())
+        return dataSource.getCardSetList(localeService.getApiLocale(), authService.getToken())
     }
 
     override suspend fun getCardRarityList(): List<CardRarity> {
-        return dataSource.getCardRarityList(localeService.getLocale(), authService.getToken())
+        return dataSource.getCardRarityList(localeService.getApiLocale(), authService.getToken())
     }
 
     override suspend fun getHeroClassList(): List<HeroClass> {
-        return dataSource.getHeroClassList(localeService.getLocale(), authService.getToken())
+        return dataSource.getHeroClassList(localeService.getApiLocale(), authService.getToken())
     }
 }

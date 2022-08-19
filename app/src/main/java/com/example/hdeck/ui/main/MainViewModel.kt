@@ -2,6 +2,7 @@ package com.example.hdeck.ui.main
 
 import androidx.lifecycle.viewModelScope
 import com.example.hdeck.localization.LocaleService
+import com.example.hdeck.model.enums.Category
 import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.repository.MetadataRepository
 import com.example.hdeck.state.IndexedList
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 interface MainViewModel : BaseViewModel {
     val state: MetadataState
-    fun onLocaleClick(locale: String)
+    fun onLocaleClick(locale: String, after:() -> Unit)
     fun onClassHeroClick()
     fun onClassHeroListItemClick(index: Int)
     fun onCardSetClick()
@@ -44,17 +45,23 @@ class MainViewModelImpl @Inject constructor(
             localeService.language.collectLatest {
                 val list = repo.getHeroClassList().toMutableList()
                 list.removeIf { it.cardId == 0 }
-                _state.heroClassList.value = IndexedList(list)
-                _state.cardSetList.value = IndexedList(repo.getCardSetList())
-                _state.cardRarityList.value = IndexedList(repo.getCardRarityList())
-
+                _state.heroClassList.value = _state.heroClassList.value?.copy(
+                    list = list
+                )
+                _state.cardSetList.value = _state.cardSetList.value?.copy(
+                    list = repo.getCardSetList()
+                )
+                _state.cardRarityList.value = _state.cardRarityList.value?.copy(
+                    list = repo.getCardRarityList()
+                )
             }
         }
     }
 
-    override fun onLocaleClick(locale: String) {
+    override fun onLocaleClick(locale: String, after: () -> Unit) {
         viewModelScope.launch {
             localeService.setLocale(locale)
+            after()
         }
     }
 
@@ -70,6 +77,7 @@ class MainViewModelImpl @Inject constructor(
     }
 
     private fun navigateToHeroClassList() {
+        _state.activeCategory.value = Category.HeroClass
         navigator.navigateToHeroClassList(state.heroClassList.value?.getCurrent()?.slug)
     }
 
@@ -85,6 +93,7 @@ class MainViewModelImpl @Inject constructor(
     }
 
     private fun navigateToCardSetList() {
+        _state.activeCategory.value = Category.CardSet
         navigator.navigateToCardSetList(state.cardSetList.value?.getCurrent()?.slug)
     }
 
@@ -100,6 +109,7 @@ class MainViewModelImpl @Inject constructor(
     }
 
     private fun navigateToCardRarityList() {
+        _state.activeCategory.value = Category.CardRarity
         navigator.navigateToCardRarityList(state.cardRarityList.value?.getCurrent()?.slug)
     }
 

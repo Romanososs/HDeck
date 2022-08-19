@@ -16,8 +16,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlaceholderFragment : Fragment() {
-    @Inject
-    lateinit var localeService: LocaleService
     private var _binding: FragmentPlaceholderBinding? = null
     private val binding get() = _binding!!
 
@@ -27,16 +25,11 @@ class PlaceholderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaceholderBinding.inflate(inflater, container, false)
-        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED)
-            localeService.language.collect {
-                setStrings()
-            }
-        }
+//        binding.text.text = resources.getText(R.string.try_out)
         return binding.root
     }
 
     private fun setStrings() {
-        binding.text.text = localeService.getString(R.string.try_out)
+//        binding.text.text = localeService.getString(R.string.try_out)
     }
 }

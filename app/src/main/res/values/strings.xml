@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name" translatable="false">HDeck</string>
-
-    <string name="try_out">Попробуй</string>
+    <string name="de" translatable="false">Deutsch</string>
+    <string name="en" translatable="false">English</string>
+    <string name="es_ES" translatable="false">Español</string>
+    <string name="es_MX" translatable="false">Español(Mexicano)</string>
+    <string name="fr" translatable="false">Français</string>
+    <string name="it" translatable="false">Italiano</string>
+    <string name="ja" translatable="false">日本</string>
+    <string name="ko" translatable="false">한국인</string>
+    <string name="pl" translatable="false">Polski</string>
+    <string name="pt" translatable="false">Português</string>
+    <string name="ru" translatable="false">Русский</string>
+    <string name="th" translatable="false">ไทย</string>
+    <string name="zh" translatable="false">中国人</string>
+    <string name="try_out">Try it out</string>
 </resources>

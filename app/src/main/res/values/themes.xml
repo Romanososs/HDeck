@@ -9,8 +9,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="colorOnBackground">@color/blue_30</item>
-        <item name="colorSurface">@color/blue_30</item>
-        <item name="colorOnSurface">@color/white</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="listPopupWindowStyle">@style/DropDownMenu</item>
     </style>
@@ -20,13 +18,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.HDeck.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.HDeck.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+    </style>
 
     <style name="DropDownMenu" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
         <item name="android:popupBackground">@color/blue_25</item>
     </style>
-
     <style name="IconButton" parent="Widget.MaterialComponents.Button.TextButton" >
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>

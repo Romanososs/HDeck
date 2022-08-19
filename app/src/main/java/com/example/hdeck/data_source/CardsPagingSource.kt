@@ -46,7 +46,7 @@ class CardsPagingSource @AssistedInject constructor(
 
     private suspend fun getCards(page: Int, pageSize: Int): Cards {
         val accessToken = authService.getToken()
-        val locale = localeService.getLocale()
+        val locale = localeService.getApiLocale()
         return when (category) {
             Category.CardSet -> retrofit.getCardList(
                 locale,
