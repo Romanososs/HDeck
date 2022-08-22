@@ -4,20 +4,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.model.enums.Category
 import com.example.hdeck.navigation.Navigator
-import com.example.hdeck.repository.MetadataRepository
-import com.example.hdeck.state.IndexedList
+import com.example.hdeck.service.MetadataService
 import com.example.hdeck.state.MetadataState
 import com.example.hdeck.state.MetadataStateImpl
 import com.example.hdeck.ui.BaseViewModel
 import com.example.hdeck.ui.BaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MainViewModel : BaseViewModel {
@@ -33,35 +27,30 @@ interface MainViewModel : BaseViewModel {
 
 @HiltViewModel
 class MainViewModelImpl @Inject constructor(
-    private val repo: MetadataRepository,
-    private val localeService: LocaleService,
+    localeService: LocaleService,
+    private val repo: MetadataService,
     private val navigator: Navigator
-) : MainViewModel, BaseViewModelImpl() {
+) : MainViewModel, BaseViewModelImpl(localeService) {
+
     private val _state = MetadataStateImpl()
     override val state: MetadataState
         get() = _state
 
-    init {
+    override fun fetchData() {
         viewModelScope.launch {
-            //FIXME viewModel collects even when view is hidden
-            //https://developer.android.com/kotlin/flow#collect
-            localeService.language.collectLatest {
-                viewModelScope.launch {
-                    _state.heroClassList.value = _state.heroClassList.value?.copy(
-                        list = repo.getHeroClassList()
-                    )
-                }
-                viewModelScope.launch {
-                    _state.cardSetList.value = _state.cardSetList.value?.copy(
-                        list = repo.getCardSetList()
-                    )
-                }
-                viewModelScope.launch {
-                    _state.cardRarityList.value = _state.cardRarityList.value?.copy(
-                        list = repo.getCardRarityList()
-                    )
-                }
-            }
+            _state.heroClassList.value = _state.heroClassList.value?.copy(
+                list = repo.getHeroClassList()
+            )
+        }
+        viewModelScope.launch {
+            _state.cardSetList.value = _state.cardSetList.value?.copy(
+                list = repo.getCardSetList()
+            )
+        }
+        viewModelScope.launch {
+            _state.cardRarityList.value = _state.cardRarityList.value?.copy(
+                list = repo.getCardRarityList()
+            )
         }
     }
 
@@ -119,5 +108,4 @@ class MainViewModelImpl @Inject constructor(
         _state.activeCategory.value = Category.CardRarity
         navigator.navigateToCardRarityList(state.cardRarityList.value?.getCurrent()?.slug)
     }
-
 }

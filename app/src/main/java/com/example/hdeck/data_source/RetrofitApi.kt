@@ -31,4 +31,11 @@ interface RetrofitApi {
         @Query("class") heroClass: String? = null,
         @Query("rarity") rarity: String? = null,
     ): Cards
+
+    @GET("hearthstone/cards/{id}")
+    suspend fun getCard(
+        @Path("id") id: String,
+        @Query("locale") locale: String,
+        @Query("access_token") access_token: String,
+    ): CardApi
 }

@@ -1,4 +1,4 @@
-package com.example.hdeck.repository
+package com.example.hdeck.service
 
 import com.example.hdeck.data_source.RetrofitDataSource
 import com.example.hdeck.auth.AuthService
@@ -9,7 +9,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
-interface MetadataRepository {
+interface MetadataService {
     suspend fun getCardSetList(): List<CardSet>
     suspend fun getCardRarityList(): List<CardRarity>
     suspend fun getHeroClassList(): List<HeroClass>
@@ -19,15 +19,16 @@ interface MetadataRepository {
     suspend fun getRarity(id: Int): CardRarity
 }
 
-class MetadataRepositoryImpl @Inject constructor(
+class MetadataServiceImpl @Inject constructor(
     private val dataSource: RetrofitDataSource,
     private val localeService: LocaleService,
     private val authService: AuthService,
-) : MetadataRepository, BaseRepository {
+) : MetadataService, BaseRepository {
 
     private var data: Metadata? = null
     private var currentLocale: Language? = null
     private val mutex = Mutex()
+
 
     private suspend fun getMetadata(): Metadata {
         mutex.withLock {
@@ -54,18 +55,18 @@ class MetadataRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getHeroClass(id: Int): HeroClass {
-        TODO("Not yet implemented")
+        return getMetadata().classes.first { it.id == id }
     }
 
     override suspend fun getCardSet(id: Int): CardSet {
-        TODO("Not yet implemented")
+        return getMetadata().sets.first { it.id == id }
     }
 
     override suspend fun getType(id: Int): CardType {
-        TODO("Not yet implemented")
+        return getMetadata().types.first { it.id == id }
     }
 
     override suspend fun getRarity(id: Int): CardRarity {
-        TODO("Not yet implemented")
+        return getMetadata().rarities.first { it.id == id }
     }
 }

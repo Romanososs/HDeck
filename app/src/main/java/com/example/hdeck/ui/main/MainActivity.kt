@@ -8,9 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -18,21 +15,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.hdeck.R
 import com.example.hdeck.databinding.ActivityMainBinding
 import com.example.hdeck.localization.LocaleService
-import com.example.hdeck.localization.StringProvider
-import com.example.hdeck.model.Language
 import com.example.hdeck.model.SupportedLanguages
 import com.example.hdeck.model.enums.Category
-import com.example.hdeck.model.enums.SetType
 import com.example.hdeck.navigation.Navigator
 import dagger.hilt.EntryPoint
-import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 import java.util.*
 import javax.inject.Inject
 

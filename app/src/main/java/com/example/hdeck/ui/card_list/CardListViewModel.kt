@@ -1,20 +1,18 @@
 package com.example.hdeck.ui.card_list
 
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.example.hdeck.data_source.CardsPagingSource
 import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.model.CardApi
 import com.example.hdeck.model.enums.Category
 import com.example.hdeck.navigation.Navigator
-import com.example.hdeck.repository.CardRepositoryImpl
 import com.example.hdeck.state.CardListState
 import com.example.hdeck.state.CardListStateImpl
 import com.example.hdeck.ui.BaseViewModel
 import com.example.hdeck.ui.BaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface CardListViewModel: BaseViewModel {
@@ -24,11 +22,11 @@ interface CardListViewModel: BaseViewModel {
 
 @HiltViewModel
 class CardListViewModelImpl @Inject constructor(
+    localeService: LocaleService,
     private val savedState: SavedStateHandle,
-    private val localeService: LocaleService,
-    private val cardsPagingSourceFactory: CardsPagingSource.Factory,
+    private val factory: CardsPagingSource.Factory,
     private val navigator: Navigator
-) : CardListViewModel, BaseViewModelImpl() {
+) : CardListViewModel, BaseViewModelImpl(localeService) {
     private val categoryId = savedState.get<Int>("categoryId") ?: 0
     private val slug = savedState.get<String>("slug") ?: ""
     private var currentPagingSource: PagingSource<Int, CardApi>? = null
@@ -40,7 +38,7 @@ class CardListViewModelImpl @Inject constructor(
                 maxSize = 200
             )
         ) {
-            cardsPagingSourceFactory.create(Category.values()[categoryId], slug).also { currentPagingSource = it }
+            factory.create(Category.values()[categoryId], slug).also { currentPagingSource = it }
         }.liveData.cachedIn(viewModelScope)
     )
 
@@ -51,11 +49,7 @@ class CardListViewModelImpl @Inject constructor(
         navigator.navigateToCard(slug)
     }
 
-    init{
-        viewModelScope.launch {
-            localeService.language.collectLatest {
-                currentPagingSource?.invalidate()
-            }
-        }
+    override fun fetchData() {
+        currentPagingSource?.invalidate()
     }
 }

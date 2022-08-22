@@ -9,9 +9,7 @@ import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.localization.LocaleServiceImpl
 import com.example.hdeck.navigation.Navigator
 import com.example.hdeck.navigation.NavigatorImpl
-import com.example.hdeck.repository.CardRepositoryImpl
-import com.example.hdeck.repository.MetadataRepository
-import com.example.hdeck.repository.MetadataRepositoryImpl
+import com.example.hdeck.service.*
 import com.example.hdeck.ui.card_info.CardInfoViewModel
 import com.example.hdeck.ui.card_info.CardInfoViewModelImpl
 import com.example.hdeck.ui.card_list.CardListViewModel
@@ -47,17 +45,20 @@ annotation class BaseRetrofit
 class AppProvideModule {
     @Singleton
     @Provides
-    fun provideMetadataRepository(
+    fun provideMetadataService(
         dataSource: RetrofitDataSource,
         localeService: LocaleService,
         authService: AuthService
-    ): MetadataRepository = MetadataRepositoryImpl(dataSource, localeService, authService)
+    ): MetadataService = MetadataServiceImpl(dataSource, localeService, authService)
+
 
     @Singleton
     @Provides
-    fun provideCardRepository(
-        factory: CardsPagingSource.Factory
-    ): CardRepositoryImpl = CardRepositoryImpl(factory)
+    fun provideCardsService(
+        dataSource: RetrofitDataSource,
+        localeService: LocaleService,
+        authService: AuthService
+    ): CardsService = CardsServiceImpl(dataSource, localeService, authService)
 
     @Singleton
     @Provides

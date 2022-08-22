@@ -1,4 +1,4 @@
-package com.example.hdeck.repository
+package com.example.hdeck.service
 
 import com.example.hdeck.state.BaseState
 import kotlinx.coroutines.Dispatchers
