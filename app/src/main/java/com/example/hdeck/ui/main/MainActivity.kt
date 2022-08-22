@@ -51,14 +51,11 @@ class MainActivity : AppCompatActivity() {
     interface HiltLocaleServiceEntryPoint {
         val service: LocaleService
     }
-//    @Inject
-//    lateinit var localeService: LocaleService
-
     private val viewModel: MainViewModel by viewModels<MainViewModelImpl>()
 
-    lateinit var menuHeroClasses: DropDownMenu
-    lateinit var menuCardSets: DropDownMenu
-    lateinit var menuCardRarities: DropDownMenu
+    private lateinit var menuHeroClasses: DropDownMenu
+    private lateinit var menuCardSets: DropDownMenu
+    private lateinit var menuCardRarities: DropDownMenu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         navigator.navController = navController
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.placeholder, R.id.deck_list
+                R.id.placeholder, R.id.card_list
             ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -79,24 +76,24 @@ class MainActivity : AppCompatActivity() {
             setCategory(it)
         }
         viewModel.state.heroClassList.observe(this) {
-            binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.text =
+            binding.navMain.dropdownMenuClasses.dropdownField.text =
                 it.getCurrent().toString()
             menuHeroClasses.setData(it.list)
-            binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout.visibility =
+            binding.navMain.dropdownMenuClasses.dropdownLayout.visibility =
                 if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
         viewModel.state.cardSetList.observe(this) {
-            binding.navMain.navContentMain.dropdownMenuSets.dropdownField.text =
+            binding.navMain.dropdownMenuSets.dropdownField.text =
                 it.getCurrent().toString()
             menuCardSets.setData(it.list)
-            binding.navMain.navContentMain.dropdownMenuSets.dropdownLayout.visibility =
+            binding.navMain.dropdownMenuSets.dropdownLayout.visibility =
                 if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
         viewModel.state.cardRarityList.observe(this) {
-            binding.navMain.navContentMain.dropdownMenuRarity.dropdownField.text =
+            binding.navMain.dropdownMenuRarity.dropdownField.text =
                 it.getCurrent().toString()
             menuCardRarities.setData(it.list)
-            binding.navMain.navContentMain.dropdownMenuRarity.dropdownLayout.visibility =
+            binding.navMain.dropdownMenuRarity.dropdownLayout.visibility =
                 if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
@@ -110,59 +107,58 @@ class MainActivity : AppCompatActivity() {
         //FIXME usage of runBlocking
         val currentLocale = runBlocking { service.getLocale() }
         config.setLocale(Locale(currentLocale))
-//        applyOverrideConfiguration(config)
         super.attachBaseContext(newBase.createConfigurationContext(config))
     }
 
 
     private fun createMenus() {
         menuHeroClasses = DropDownMenu(
-            this, binding.navMain.navContentMain.dropdownMenuClasses.dropdownLayout
+            this, binding.navMain.dropdownMenuClasses.dropdownLayout
         ) {
             viewModel.onClassHeroListItemClick(it)
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuClasses.dropdownField.setOnClickListener {
+        binding.navMain.dropdownMenuClasses.dropdownField.setOnClickListener {
             viewModel.onClassHeroClick()
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
+        binding.navMain.dropdownMenuClasses.dropdownButton.setOnClickListener {
             menuHeroClasses.show()
         }
         menuCardSets = DropDownMenu(
-            this, binding.navMain.navContentMain.dropdownMenuSets.dropdownLayout
+            this, binding.navMain.dropdownMenuSets.dropdownLayout
         ) {
             viewModel.onCardSetListItemClick(it)
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuSets.dropdownField.setOnClickListener {
+        binding.navMain.dropdownMenuSets.dropdownField.setOnClickListener {
             viewModel.onCardSetClick()
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuSets.dropdownButton.setOnClickListener {
+        binding.navMain.dropdownMenuSets.dropdownButton.setOnClickListener {
             menuCardSets.show()
         }
         menuCardRarities = DropDownMenu(
-            this, binding.navMain.navContentMain.dropdownMenuRarity.dropdownLayout
+            this, binding.navMain.dropdownMenuRarity.dropdownLayout
         ) {
             viewModel.onCardRarityListItemClick(it)
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuRarity.dropdownField.setOnClickListener {
+        binding.navMain.dropdownMenuRarity.dropdownField.setOnClickListener {
             viewModel.onCardRarityClick()
             binding.drawerLayout.closeDrawers()
         }
-        binding.navMain.navContentMain.dropdownMenuRarity.dropdownButton.setOnClickListener {
+        binding.navMain.dropdownMenuRarity.dropdownButton.setOnClickListener {
             menuCardRarities.show()
         }
     }
 
     private fun setCategory(category: Category) {
-        binding.navMain.navContentMain.dropdownMenuClasses.line.visibility =
+        binding.navMain.dropdownMenuClasses.line.visibility =
             if (category == Category.HeroClass) View.VISIBLE else View.GONE
-        binding.navMain.navContentMain.dropdownMenuSets.line.visibility =
+        binding.navMain.dropdownMenuSets.line.visibility =
             if (category == Category.CardSet) View.VISIBLE else View.GONE
-        binding.navMain.navContentMain.dropdownMenuRarity.line.visibility =
+        binding.navMain.dropdownMenuRarity.line.visibility =
             if (category == Category.CardRarity) View.VISIBLE else View.GONE
     }
 

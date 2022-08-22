@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">HDeck</string>
     <string name="de" translatable="false">Deutsch</string>
     <string name="en" translatable="false">English</string>
@@ -14,4 +14,9 @@
     <string name="th" translatable="false">ไทย</string>
     <string name="zh" translatable="false">中国人</string>
     <string name="try_out">Try it out</string>
+    <string name="card_set" tools:ignore="MissingTranslation">Set:</string>
+    <string name="card_heroClass" tools:ignore="MissingTranslation">Class:</string>
+    <string name="card_rarity" tools:ignore="MissingTranslation">Rarity:</string>
+    <string name="card_type" tools:ignore="MissingTranslation">Type:</string>
+    <string name="card_artistName" tools:ignore="MissingTranslation">Artist:</string>
 </resources>

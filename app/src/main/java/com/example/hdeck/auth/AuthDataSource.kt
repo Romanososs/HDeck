@@ -1,6 +1,8 @@
 package com.example.hdeck.data_source
 
+import com.example.hdeck.BuildConfig
 import com.example.hdeck.auth.TokenResponse
+import com.example.hdeck.di.AuthRetrofit
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,21 +15,15 @@ interface AuthDataSource {
 }
 
 class AuthDataSourceImpl(
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher,
+    private val retrofit: RetrofitApi
 ) : AuthDataSource {
-    private val BASE_URL = "https://us.battle.net"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(RetrofitApi::class.java)
 
     override suspend fun getToken(): TokenResponse {
         return withContext(dispatcher) {
             retrofit.getToken(
-                "8b571509977049a9971bcf4b206d7dd3",
-                "C6rxdUPB0VDurAjxKZS1wys5RpS49vBN"
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET
             )
         }
     }

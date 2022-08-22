@@ -1,64 +1,72 @@
-package com.example.hdeck.ui.deck_list
+package com.example.hdeck.ui.card_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
-import com.example.hdeck.databinding.FragmentDeckListBinding
+import com.example.hdeck.databinding.FragmentCardListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DeckListFragment : Fragment() {
+class CardListFragment : Fragment() {
 
-    private var _binding: FragmentDeckListBinding? = null
+    private var _binding: FragmentCardListBinding? = null
     private val binding get() = _binding!!
-    val args: DeckListFragmentArgs by navArgs()
-    private val viewModel: DeckListViewModel by viewModels<DeckListViewModelImpl>()
+    val args: CardListFragmentArgs by navArgs()
+    private val viewModel: CardListViewModel by viewModels<CardListViewModelImpl>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentDeckListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val pagingAdapter = DeckListAdapter(UserComparator)
+        _binding = FragmentCardListBinding.inflate(inflater, container, false)
+        val pagingAdapter = CardListAdapter(CardComparator) {
+            viewModel.onItemClick(it)
+        }
         binding.cards.adapter = pagingAdapter
-        viewModel.state.cardList.observe(viewLifecycleOwner) { pagingData ->
+        viewModel.state.cardApiList.observe(viewLifecycleOwner) { pagingData ->
             viewLifecycleOwner.lifecycleScope.launch {
-                pagingAdapter.submitData(pagingData)
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    pagingAdapter.submitData(pagingData)
+                }
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            pagingAdapter.loadStateFlow.collectLatest {
-                setLoading(it.refresh is LoadState.Loading)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                pagingAdapter.loadStateFlow.collectLatest {
+                    setLoading(it.refresh is LoadState.Loading)
+                }
             }
         }
-        return root
+        return binding.root
     }
+
     override fun onStart() {
         super.onStart()
         viewModel.onViewShown()
     }
+
     override fun onStop() {
         super.onStop()
         viewModel.onViewHidden()
     }
-    private fun setLoading(isLoading: Boolean){
+
+    private fun setLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
         binding.cards.isVisible = !isLoading
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

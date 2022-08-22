@@ -1,7 +1,7 @@
 package com.example.hdeck.model
 
 data class Cards(
-    val cards: List<Card>,
+    val cards: MutableList<CardApi>,
     val cardCount: Int,
     val pageCount: Int,
     val page: Int

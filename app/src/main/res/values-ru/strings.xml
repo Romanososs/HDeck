@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="try_out">Попробуй</string>
+    <string name="card_set">Набор:</string>
+    <string name="card_heroClass">Класс:</string>
+    <string name="card_rarity">Редкость:</string>
+    <string name="card_type">Тип:</string>
+    <string name="card_artistName">Художник:</string>
 </resources>

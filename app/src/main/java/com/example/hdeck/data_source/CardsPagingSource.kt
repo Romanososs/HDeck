@@ -3,42 +3,37 @@ package com.example.hdeck.data_source
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.hdeck.auth.AuthService
+import com.example.hdeck.di.BaseRetrofit
 import com.example.hdeck.localization.LocaleService
-import com.example.hdeck.model.Card
+import com.example.hdeck.model.CardApi
 import com.example.hdeck.model.Cards
 import com.example.hdeck.model.enums.Category
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class CardsPagingSource @AssistedInject constructor(
     private val authService: AuthService,
     private val localeService: LocaleService,
+    @BaseRetrofit private val retrofit: RetrofitApi,
     @Assisted("category") val category: Category,
     @Assisted("slug") val slug: String
-) : PagingSource<Int, Card>() {
-    private val BASE_URL = "https://eu.api.blizzard.com/"
+) : PagingSource<Int, CardApi>() {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(RetrofitApi::class.java)
-
-    override fun getRefreshKey(state: PagingState<Int, Card>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CardApi>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Card> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CardApi> {
         val pageNumber = params.key ?: 1
         val response = getCards(pageNumber, params.loadSize)
+        val data = response.cards
+        data.removeIf { it.copyOfCardId != 0 }
         return LoadResult.Page(
-            data = response.cards,
+            data = data,
             prevKey = if (pageNumber > 1) pageNumber - 1 else null,
             nextKey = if (response.pageCount == pageNumber) null else pageNumber + 1
         )

@@ -1,4 +1,4 @@
-package com.example.hdeck.model
+package com.example.hdeck.model.metadata
 
 import com.example.hdeck.model.enums.SetType
 

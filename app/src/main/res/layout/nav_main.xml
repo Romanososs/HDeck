@@ -11,16 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <!--Toolbar-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryVariant"
             android:orientation="vertical" />
+        <!---->
 
-        <include
-            android:id="@+id/nav_content_main"
-            layout="@layout/nav_content_main" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/dropdown_menu_classes"
+                layout="@layout/dropdown_menu"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/dropdown_menu_sets"
+                layout="@layout/dropdown_menu"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/dropdown_menu_rarity"
+                layout="@layout/dropdown_menu"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </LinearLayout>
 </com.google.android.material.navigation.NavigationView>

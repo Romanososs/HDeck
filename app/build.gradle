@@ -15,6 +15,11 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField 'String', 'BASE_URL', '"https://eu.api.blizzard.com/"'
+        buildConfigField 'String', 'AUTH_BASE_URL', '"https://us.battle.net/"'
+        buildConfigField 'String', 'CLIENT_ID', '"8b571509977049a9971bcf4b206d7dd3"'
+        buildConfigField 'String', 'CLIENT_SECRET', '"C6rxdUPB0VDurAjxKZS1wys5RpS49vBN"'
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -59,6 +64,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
     //Coil

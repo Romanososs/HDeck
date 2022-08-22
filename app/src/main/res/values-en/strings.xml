@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="try_out">Try it out</string>
+    <string name="card_set">Set:</string>
+    <string name="card_heroClass">Class:</string>
+    <string name="card_rarity">Rarity:</string>
+    <string name="card_type">Type:</string>
+    <string name="card_artistName">Artist:</string>
 </resources>

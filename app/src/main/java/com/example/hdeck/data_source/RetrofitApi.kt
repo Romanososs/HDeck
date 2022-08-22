@@ -1,9 +1,8 @@
 package com.example.hdeck.data_source
 
+import com.example.hdeck.model.metadata.Metadata
 import com.example.hdeck.auth.TokenResponse
 import com.example.hdeck.model.*
-import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.http.*
 
 interface RetrofitApi {
@@ -15,24 +14,12 @@ interface RetrofitApi {
         @Field("grant_type") grant_type: String = "client_credentials"
     ): TokenResponse
 
-    //TODO maybe smash it into one function
-    @GET("hearthstone/metadata/classes")
-    suspend fun getHeroClassList(
+    @GET("hearthstone/metadata")
+    suspend fun getMetadata(
         @Query("locale") locale: String,
         @Query("access_token") access_token: String
-    ): List<HeroClass>
+    ): Metadata
 
-    @GET("hearthstone/metadata/sets")
-    suspend fun getCardSetList(
-        @Query("locale") locale: String,
-        @Query("access_token") access_token: String
-    ): List<CardSet>
-
-    @GET("hearthstone/metadata/rarities")
-    suspend fun getCardRarityList(
-        @Query("locale") locale: String,
-        @Query("access_token") access_token: String
-    ): List<CardRarity>
 
     @GET("hearthstone/cards")
     suspend fun getCardList(
@@ -40,8 +27,8 @@ interface RetrofitApi {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
         @Query("access_token") access_token: String,
-        @Query("set") set: String = "",
-        @Query("class") heroClass: String = "",
-        @Query("rarity") rarity: String = "",
+        @Query("set") set: String? = null,
+        @Query("class") heroClass: String? = null,
+        @Query("rarity") rarity: String? = null,
     ): Cards
 }

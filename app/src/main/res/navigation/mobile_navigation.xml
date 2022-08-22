@@ -11,19 +11,33 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_placeholder" />
     <fragment
-        android:id="@+id/deck_list"
-        android:name="com.example.hdeck.ui.deck_list.DeckListFragment"
+        android:id="@+id/card_list"
+        android:name="com.example.hdeck.ui.card_list.CardListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_deck_list">
+        tools:layout="@layout/fragment_card_list">
         <argument
             android:name="categoryId"
             app:argType="integer" />
         <argument
             android:name="slug"
             app:argType="string" />
+        <action
+            android:id="@+id/action_card_list_to_card_info"
+            app:destination="@id/card_info" />
     </fragment>
+
     <action
         android:id="@+id/action_global_deck_list"
-        app:destination="@id/deck_list"
+        app:destination="@id/card_list"
         app:popUpTo="@id/mobile_navigation" />
+
+    <fragment
+        android:id="@+id/card_info"
+        android:name="com.example.hdeck.ui.card_info.CardInfoFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_card_info">
+        <argument
+            android:name="slug"
+            app:argType="string" />
+    </fragment>
 </navigation>

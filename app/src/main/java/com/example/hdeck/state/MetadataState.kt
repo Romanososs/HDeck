@@ -2,9 +2,9 @@ package com.example.hdeck.state
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.hdeck.model.CardRarity
-import com.example.hdeck.model.CardSet
-import com.example.hdeck.model.HeroClass
+import com.example.hdeck.model.metadata.CardRarity
+import com.example.hdeck.model.metadata.CardSet
+import com.example.hdeck.model.metadata.HeroClass
 import com.example.hdeck.model.enums.Category
 
 interface MetadataState {

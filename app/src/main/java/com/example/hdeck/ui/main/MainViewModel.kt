@@ -11,10 +11,13 @@ import com.example.hdeck.state.MetadataStateImpl
 import com.example.hdeck.ui.BaseViewModel
 import com.example.hdeck.ui.BaseViewModelImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MainViewModel : BaseViewModel {
@@ -43,17 +46,21 @@ class MainViewModelImpl @Inject constructor(
             //FIXME viewModel collects even when view is hidden
             //https://developer.android.com/kotlin/flow#collect
             localeService.language.collectLatest {
-                val list = repo.getHeroClassList().toMutableList()
-                list.removeIf { it.cardId == 0 }
-                _state.heroClassList.value = _state.heroClassList.value?.copy(
-                    list = list
-                )
-                _state.cardSetList.value = _state.cardSetList.value?.copy(
-                    list = repo.getCardSetList()
-                )
-                _state.cardRarityList.value = _state.cardRarityList.value?.copy(
-                    list = repo.getCardRarityList()
-                )
+                viewModelScope.launch {
+                    _state.heroClassList.value = _state.heroClassList.value?.copy(
+                        list = repo.getHeroClassList()
+                    )
+                }
+                viewModelScope.launch {
+                    _state.cardSetList.value = _state.cardSetList.value?.copy(
+                        list = repo.getCardSetList()
+                    )
+                }
+                viewModelScope.launch {
+                    _state.cardRarityList.value = _state.cardRarityList.value?.copy(
+                        list = repo.getCardRarityList()
+                    )
+                }
             }
         }
     }

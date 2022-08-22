@@ -19,7 +19,10 @@ open class Language(
         "zh" -> "zh_TW"
         else -> "en_US"
     }
-
+    override fun equals(other: Any?): Boolean {
+        val lang = other as Language
+        return code == lang.code && apiCode == lang.apiCode
+    }
 }
 class SupportedLanguages{
     object GERMAN : Language("de")
