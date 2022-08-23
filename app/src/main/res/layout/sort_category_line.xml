@@ -1,0 +1,46 @@
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        app:chipSpacingHorizontal="16dp"
+        app:singleSelection="true"
+        app:singleLine="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bubble_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_name" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bubble_attack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_attack" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bubble_health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_health" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bubble_mana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_mana" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bubble_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_class" />
+    </com.google.android.material.chip.ChipGroup>
+</HorizontalScrollView>

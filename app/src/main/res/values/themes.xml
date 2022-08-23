@@ -24,8 +24,18 @@
     <style name="DropDownMenu" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
         <item name="android:popupBackground">@color/blue_25</item>
     </style>
-    <style name="IconButton" parent="Widget.MaterialComponents.Button.TextButton" >
+    <style name="IconButton" parent="Widget.MaterialComponents.Button" >
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+    </style>
+    <style name="Bubble" parent="Widget.MaterialComponents.Button">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="colorAccent">@color/grey</item>
     </style>
 </resources>

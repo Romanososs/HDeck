@@ -8,5 +8,6 @@
     <color name="yellow_40">#FFcca300</color>
     <color name="light_yellow_80">#FFfaf0be</color>
     <color name="black">#FF000000</color>
+    <color name="grey">#FFc2c2c2</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
