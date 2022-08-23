@@ -23,7 +23,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_card_list_to_card_info"
-            app:destination="@id/card_info" />
+            app:destination="@id/card_info"
+            app:enterAnim="@anim/right_to_center"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/center_to_right"/>
     </fragment>
 
     <action
