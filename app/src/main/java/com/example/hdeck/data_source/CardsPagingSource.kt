@@ -16,59 +16,67 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
 
-
 class CardsPagingSource @AssistedInject constructor(
     private val authService: AuthService,
     private val localeService: LocaleService,
     private val cardsService: CardsService,
     @BaseRetrofit private val retrofit: RetrofitApi,
     @Assisted("category") val category: Category,
-    @Assisted("slug") val slug: String
+    @Assisted("slug") val slug: String,
+    @Assisted("sort") val sort: String?
 ) : PagingSource<Int, CardApi>() {
 
     override fun getRefreshKey(state: PagingState<Int, CardApi>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+            state.closestPageToPosition(anchorPosition)?.let { anchorPage ->
+                anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
+            }
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CardApi> {
         val pageNumber = params.key ?: 1
-        val response = getCards(pageNumber, params.loadSize)
-        val data = response.cards
-        data.removeIf { it.copyOfCardId != 0 }
-
-        return LoadResult.Page(
-            data = data,
-            prevKey = if (pageNumber > 1) pageNumber - 1 else null,
-            nextKey = if (response.pageCount == pageNumber) null else pageNumber + 1
-        ).also { cardsService.setPage(pageNumber-1, it) }
+        val page = cardsService.getPage(pageNumber)
+        return if (page != null) page
+        else {
+            val response = getCards(pageNumber, params.loadSize)
+            val data = response.cards
+            data.removeIf { card -> card.copyOfCardId != 0 }
+            LoadResult.Page(
+                data = data,
+                prevKey = if (pageNumber > 1) pageNumber - 1 else null,
+                nextKey = if (response.pageCount == pageNumber) null else pageNumber + 1
+            ).also { cardsService.setPage(pageNumber, it) }
+        }
     }
 
     private suspend fun getCards(page: Int, pageSize: Int): Cards {
         val accessToken = authService.getToken()
-        val locale = localeService.getLanguage().also {
-            cardsService.setLanguage(it)
-        }
+        val locale = localeService.getApiLocale()
         return when (category) {
             Category.CardSet -> retrofit.getCardList(
-                locale.apiCode,
+                locale,
                 page,
                 pageSize,
-                accessToken, set = slug
+                accessToken,
+                sort,
+                set = slug
             )
             Category.HeroClass -> retrofit.getCardList(
-                locale.apiCode,
+                locale,
                 page,
                 pageSize,
-                accessToken, heroClass = slug
+                accessToken,
+                sort,
+                heroClass = slug
             )
             Category.CardRarity -> retrofit.getCardList(
-                locale.apiCode,
+                locale,
                 page,
                 pageSize,
-                accessToken, rarity = slug
+                accessToken,
+                sort,
+                rarity = slug
             )
         }
     }
@@ -78,7 +86,8 @@ class CardsPagingSource @AssistedInject constructor(
 
         fun create(
             @Assisted("category") category: Category,
-            @Assisted("slug") slug: String
+            @Assisted("slug") slug: String,
+            @Assisted("sort") sort: String?
         ): CardsPagingSource
     }
 }

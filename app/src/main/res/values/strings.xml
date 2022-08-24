@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">HDeck</string>
+    <string name="search" tools:ignore="MissingTranslation">Search</string>
     <string name="de" translatable="false">Deutsch</string>
     <string name="en" translatable="false">English</string>
     <string name="es_ES" translatable="false">Español</string>
@@ -19,4 +20,12 @@
     <string name="card_rarity" tools:ignore="MissingTranslation">Rarity:</string>
     <string name="card_type" tools:ignore="MissingTranslation">Type:</string>
     <string name="card_artistName" tools:ignore="MissingTranslation">Artist:</string>
+    <string name="bubble_mana" tools:ignore="MissingTranslation">Mana</string>
+    <string name="bubble_attack" tools:ignore="MissingTranslation">Attack</string>
+    <string name="bubble_health" tools:ignore="MissingTranslation">Health</string>
+    <string name="bubble_name" tools:ignore="MissingTranslation">Name</string>
+    <string name="bubble_class" tools:ignore="MissingTranslation">Class</string>
+
+    <string name="bubble_asc" tools:ignore="MissingTranslation">Ascending</string>
+    <string name="bubble_desc" tools:ignore="MissingTranslation">Descending</string>
 </resources>

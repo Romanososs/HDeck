@@ -17,7 +17,6 @@ abstract class BaseViewModelImpl(
 ) : BaseViewModel, ViewModel() {
     protected val jobs = mutableListOf<Job?>()
     override fun onViewShown() {
-        println("TAGTAG view shown $this")
         jobs.add(viewModelScope.launch {
             localeService.language.collectLatest {
                 fetchData()
@@ -26,7 +25,6 @@ abstract class BaseViewModelImpl(
     }
 
     override fun onViewHidden() {
-        println("TAGTAG view hidden $this")
         jobs.forEach {
             it?.cancel()
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hdeck.localization.LocaleService
 import com.example.hdeck.model.enums.Category
 import com.example.hdeck.navigation.Navigator
+import com.example.hdeck.service.CardsService
 import com.example.hdeck.service.MetadataService
 import com.example.hdeck.state.MetadataState
 import com.example.hdeck.state.MetadataStateImpl
@@ -28,6 +29,7 @@ interface MainViewModel : BaseViewModel {
 @HiltViewModel
 class MainViewModelImpl @Inject constructor(
     localeService: LocaleService,
+    private val cardService: CardsService,
     private val repo: MetadataService,
     private val navigator: Navigator
 ) : MainViewModel, BaseViewModelImpl(localeService) {
@@ -52,6 +54,7 @@ class MainViewModelImpl @Inject constructor(
                 list = repo.getCardRarityList()
             )
         }
+        cardService.onListChange()
     }
 
     override fun onLocaleClick(locale: String, after: () -> Unit) {
@@ -74,6 +77,7 @@ class MainViewModelImpl @Inject constructor(
 
     private fun navigateToHeroClassList() {
         _state.activeCategory.value = Category.HeroClass
+        cardService.onListChange()
         navigator.navigateToHeroClassList(state.heroClassList.value?.getCurrent()?.slug)
     }
 
@@ -90,6 +94,7 @@ class MainViewModelImpl @Inject constructor(
 
     private fun navigateToCardSetList() {
         _state.activeCategory.value = Category.CardSet
+        cardService.onListChange()
         navigator.navigateToCardSetList(state.cardSetList.value?.getCurrent()?.slug)
     }
 
@@ -106,6 +111,7 @@ class MainViewModelImpl @Inject constructor(
 
     private fun navigateToCardRarityList() {
         _state.activeCategory.value = Category.CardRarity
+        cardService.onListChange()
         navigator.navigateToCardRarityList(state.cardRarityList.value?.getCurrent()?.slug)
     }
 }
