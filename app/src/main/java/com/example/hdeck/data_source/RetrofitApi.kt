@@ -27,6 +27,7 @@ interface RetrofitApi {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
         @Query("access_token") access_token: String,
+        @Query("sort") sort: String? = null,
         @Query("set") set: String? = null,
         @Query("class") heroClass: String? = null,
         @Query("rarity") rarity: String? = null,

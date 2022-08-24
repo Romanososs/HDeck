@@ -6,4 +6,6 @@ import com.example.hdeck.model.enums.OrderFilter
 data class Filter(
     val category: CategoryFilter = CategoryFilter.Name,
     val order: OrderFilter = OrderFilter.Asc
-)
+){
+    fun getFilter(): String = "${category.str}:${order.str}"
+}
