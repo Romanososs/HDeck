@@ -22,7 +22,7 @@
     </style>
 
     <style name="DropDownMenu" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
-        <item name="android:popupBackground">@color/blue_25</item>
+        <item name="android:popupBackground">@color/blue_20</item>
     </style>
     <style name="IconButton" parent="Widget.MaterialComponents.Button.TextButton" >
         <item name="android:minHeight">0dp</item>

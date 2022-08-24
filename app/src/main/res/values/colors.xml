@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue_35">#FF002db3</color>
-    <color name="blue_30">#FF002699</color>
-    <color name="blue_25">#FF002080</color>
-    <color name="blue_20">#FF001a66</color>
+    <color name="blue_30">#FF001e5d</color>
+    <color name="blue_20">#FF001442</color>
     <color name="yellow_45">#FFe6b800</color>
     <color name="yellow_40">#FFcca300</color>
     <color name="light_yellow_80">#FFfaf0be</color>
